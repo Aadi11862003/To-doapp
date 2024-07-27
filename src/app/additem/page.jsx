@@ -18,16 +18,42 @@ const AddTask = () => {
     } else {
       setTasks([]); // Ensure tasks is always an array
     }
+
+    // Update remaining time every second
+    const interval = setInterval(() => {
+      setTasks((prevTasks) =>
+        prevTasks.map((task) => ({
+          ...task,
+          remainingTime: calculateRemainingTime(task.timestamp),
+        }))
+      );
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, []);
+
+  const calculateRemainingTime = (timestamp) => {
+    const createdTime = new Date(timestamp).getTime();
+    const currentTime = new Date().getTime();
+    const difference = createdTime + 24 * 60 * 60 * 1000 - currentTime;
+    if (difference <= 0) return 'Expired';
+    const hours = Math.floor((difference % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+    const minutes = Math.floor((difference % (60 * 60 * 1000)) / (60 * 1000));
+    const seconds = Math.floor((difference % (60 * 1000)) / 1000);
+    return `${hours}h ${minutes}m ${seconds}s`;
+  };
 
   const handleAddTask = (e) => {
     e.preventDefault();
     if (taskInput.trim()) {
+      const timestamp = new Date().toISOString();
       const newTask = {
         text: taskInput.trim(),
         dueDate,
         reminder,
-        priority
+        priority,
+        timestamp,
+        remainingTime: calculateRemainingTime(timestamp),
       };
       const updatedTasks = [...tasks, newTask];
       localStorage.setItem('tasks', JSON.stringify(updatedTasks));
@@ -55,6 +81,11 @@ const AddTask = () => {
       localStorage.setItem('tasks', JSON.stringify(updatedTasks));
       setTasks(updatedTasks);
     }
+  };
+
+  const formatTimestamp = (timestamp) => {
+    const date = new Date(timestamp);
+    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
   };
 
   return (
@@ -150,6 +181,8 @@ const AddTask = () => {
                     <span><span className="font-bold">Due:</span> {task.dueDate || 'N/A'}</span>
                     <span><span className="font-bold">Reminder:</span> {task.reminder || 'N/A'}</span>
                     <span><span className="font-bold">Priority:</span> {task.priority}</span>
+                    <span><span className="font-bold">Created:</span> {formatTimestamp(task.timestamp)}</span>
+                    <span><span className="font-bold">Remaining:</span> {task.remainingTime}</span>
                   </div>
                 </div>
               ))}
@@ -162,5 +195,8 @@ const AddTask = () => {
 };
 
 export default AddTask;
+
+
+
 
 
