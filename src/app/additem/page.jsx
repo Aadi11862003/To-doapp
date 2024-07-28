@@ -177,6 +177,7 @@ const AddTask = () => {
                       </button>
                     </div>
                   </div>
+                  
                   <div className="flex space-x-4">
                     <span><span className="font-bold">Due:</span> {task.dueDate || 'N/A'}</span>
                     <span><span className="font-bold">Reminder:</span> {task.reminder || 'N/A'}</span>
