@@ -162,7 +162,7 @@ const AddTask = () => {
                     <div className="flex-1">
                       <span className="font-bold">Task:</span> {task.text}
                     </div>
-                    <div className="flex space-x-2">
+                    <div className="flex space-x-2 items-center">
                       <button
                         onClick={() => handleEditTask(index)}
                         className="text-blue-500 hover:text-blue-700"
@@ -175,6 +175,9 @@ const AddTask = () => {
                       >
                         Delete
                       </button>
+                      <div className="text-gray-500">
+                        <span className="font-bold">Remaining:</span> {task.remainingTime}
+                      </div>
                     </div>
                   </div>
                   
@@ -183,7 +186,6 @@ const AddTask = () => {
                     <span><span className="font-bold">Reminder:</span> {task.reminder || 'N/A'}</span>
                     <span><span className="font-bold">Priority:</span> {task.priority}</span>
                     <span><span className="font-bold">Created:</span> {formatTimestamp(task.timestamp)}</span>
-                    <span><span className="font-bold">Remaining:</span> {task.remainingTime}</span>
                   </div>
                 </div>
               ))}
@@ -196,6 +198,8 @@ const AddTask = () => {
 };
 
 export default AddTask;
+
+
 
 
 
