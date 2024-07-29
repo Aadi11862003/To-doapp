@@ -152,11 +152,11 @@ const AddTask = () => {
           {tasks.length === 0 ? (
             <p>No tasks added yet.</p>
           ) : (
-            <div className="flex space-x-4 overflow-x-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {tasks.map((task, index) => (
                 <div
                   key={index}
-                  className="bg-white p-4 border rounded-lg flex flex-col space-y-2 shadow-sm min-w-[300px]"
+                  className="bg-white p-4 border rounded-lg flex flex-col space-y-2 shadow-sm"
                 >
                   <div className="flex justify-between items-center mb-2">
                     <div className="flex-1">
@@ -181,7 +181,7 @@ const AddTask = () => {
                     </div>
                   </div>
                   
-                  <div className="flex space-x-4">
+                  <div className="flex flex-col space-y-1">
                     <span><span className="font-bold">Due:</span> {task.dueDate || 'N/A'}</span>
                     <span><span className="font-bold">Reminder:</span> {task.reminder || 'N/A'}</span>
                     <span><span className="font-bold">Priority:</span> {task.priority}</span>
@@ -198,6 +198,7 @@ const AddTask = () => {
 };
 
 export default AddTask;
+
 
 
 
