@@ -43,13 +43,11 @@ const AddTask = () => {
     return `${hours}h ${minutes}m ${seconds}s`;
   };
 
-  const generateRandomColor = () => {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
+  const generateRandomLightColor = () => {
+    const r = Math.floor(Math.random() * 56) + 200; // 200-255
+    const g = Math.floor(Math.random() * 56) + 200; // 200-255
+    const b = Math.floor(Math.random() * 56) + 200; // 200-255
+    return `rgb(${r}, ${g}, ${b})`;
   };
 
   const handleAddTask = (e) => {
@@ -63,7 +61,7 @@ const AddTask = () => {
         priority,
         timestamp,
         remainingTime: calculateRemainingTime(timestamp),
-        bgColor: generateRandomColor(),
+        bgColor: generateRandomLightColor(),
       };
       const updatedTasks = [...tasks, newTask];
       localStorage.setItem('tasks', JSON.stringify(updatedTasks));
@@ -209,6 +207,7 @@ const AddTask = () => {
 };
 
 export default AddTask;
+
 
 
 
