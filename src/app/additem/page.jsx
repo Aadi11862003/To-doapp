@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from 'react';
 import Navbar from '../sidebar/page'; // Ensure this path is correct
@@ -152,11 +152,11 @@ const AddTask = () => {
           {tasks.length === 0 ? (
             <p>No tasks added yet.</p>
           ) : (
-            <div className="space-y-4">
+            <div className="flex space-x-4 overflow-x-auto">
               {tasks.map((task, index) => (
                 <div
                   key={index}
-                  className="bg-white p-4 border rounded-lg flex flex-col space-y-2 shadow-sm"
+                  className="bg-white p-4 border rounded-lg flex flex-col space-y-2 shadow-sm min-w-[300px]"
                 >
                   <div className="flex justify-between items-center mb-2">
                     <div className="flex-1">
