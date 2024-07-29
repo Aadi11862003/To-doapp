@@ -43,6 +43,15 @@ const AddTask = () => {
     return `${hours}h ${minutes}m ${seconds}s`;
   };
 
+  const generateRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
   const handleAddTask = (e) => {
     e.preventDefault();
     if (taskInput.trim()) {
@@ -54,6 +63,7 @@ const AddTask = () => {
         priority,
         timestamp,
         remainingTime: calculateRemainingTime(timestamp),
+        bgColor: generateRandomColor(),
       };
       const updatedTasks = [...tasks, newTask];
       localStorage.setItem('tasks', JSON.stringify(updatedTasks));
@@ -156,7 +166,8 @@ const AddTask = () => {
               {tasks.map((task, index) => (
                 <div
                   key={index}
-                  className="bg-white p-4 border rounded-lg flex flex-col space-y-2 shadow-sm"
+                  className="p-4 border rounded-lg flex flex-col space-y-2 shadow-sm"
+                  style={{ backgroundColor: task.bgColor }}
                 >
                   <div className="flex justify-between items-center mb-2">
                     <div className="flex-1">
@@ -198,6 +209,7 @@ const AddTask = () => {
 };
 
 export default AddTask;
+
 
 
 
