@@ -167,11 +167,22 @@ const AddTask = () => {
                   className="p-4 border rounded-lg flex flex-col space-y-2 shadow-sm"
                   style={{ backgroundColor: task.bgColor }}
                 >
-                  <div className="flex justify-between items-center mb-2">
-                    <div className="flex-1">
+                  <div className="flex flex-col space-y-2">
+                    <div className="break-words max-h-20 overflow-auto">
                       <span className="font-bold">Task:</span> {task.text}
                     </div>
-                    <div className="flex space-x-2 items-center">
+                    <div className="text-gray-500">
+                      <span className="font-bold">Remaining:</span> {task.remainingTime}
+                    </div>
+                  </div>
+                  <div className="flex justify-between">
+                    <div className="flex flex-col space-y-1">
+                      <span><span className="font-bold">Due:</span> {task.dueDate || 'N/A'}</span>
+                      <span><span className="font-bold">Reminder:</span> {task.reminder || 'N/A'}</span>
+                      <span><span className="font-bold">Priority:</span> {task.priority}</span>
+                      <span><span className="font-bold">Created:</span> {formatTimestamp(task.timestamp)}</span>
+                    </div>
+                    <div className="flex flex-col space-y-1">
                       <button
                         onClick={() => handleEditTask(index)}
                         className="text-blue-500 hover:text-blue-700"
@@ -184,17 +195,7 @@ const AddTask = () => {
                       >
                         Delete
                       </button>
-                      <div className="text-gray-500">
-                        <span className="font-bold">Remaining:</span> {task.remainingTime}
-                      </div>
                     </div>
-                  </div>
-                  
-                  <div className="flex flex-col space-y-1">
-                    <span><span className="font-bold">Due:</span> {task.dueDate || 'N/A'}</span>
-                    <span><span className="font-bold">Reminder:</span> {task.reminder || 'N/A'}</span>
-                    <span><span className="font-bold">Priority:</span> {task.priority}</span>
-                    <span><span className="font-bold">Created:</span> {formatTimestamp(task.timestamp)}</span>
                   </div>
                 </div>
               ))}
@@ -207,9 +208,6 @@ const AddTask = () => {
 };
 
 export default AddTask;
-
-
-
 
 
 
