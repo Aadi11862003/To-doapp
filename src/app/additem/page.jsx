@@ -11,7 +11,7 @@ const AddTask = () => {
   const [reminder, setReminder] = useState('');
   const [priority, setPriority] = useState('low');
   const [tasks, setTasks] = useState([]);
-  const [taskCompletionData, setTaskCompletionData] = useState({});
+  const [taskCompletionData, setTaskCompletionData] = useState({ high: 0, medium: 0, low: 0 });
 
   useEffect(() => {
     // Load tasks from localStorage when component mounts
@@ -47,11 +47,10 @@ const AddTask = () => {
     return `${hours}h ${minutes}m ${seconds}s`;
   };
 
-  const generateRandomLightColor = () => {
-    const r = Math.floor(Math.random() * 56) + 200; // 200-255
-    const g = Math.floor(Math.random() * 56) + 200; // 200-255
-    const b = Math.floor(Math.random() * 56) + 200; // 200-255
-    return `rgb(${r}, ${g}, ${b})`;
+  const priorityColors = {
+    low: 'rgb(200, 255, 200)', // light green
+    medium: 'rgb(255, 255, 200)', // light yellow
+    high: 'rgb(255, 200, 200)' // light red
   };
 
   const handleAddTask = (e) => {
@@ -65,7 +64,7 @@ const AddTask = () => {
         priority,
         timestamp,
         remainingTime: calculateRemainingTime(timestamp),
-        bgColor: generateRandomLightColor(),
+        bgColor: priorityColors[priority],
         completed: false,
       };
       const updatedTasks = [...tasks, newTask];
@@ -116,27 +115,33 @@ const AddTask = () => {
   const updateTaskCompletionData = (tasks) => {
     const completionData = tasks.reduce((acc, task) => {
       if (task.completed) {
-        const date = new Date(task.timestamp).toLocaleDateString();
-        if (!acc[date]) acc[date] = 0;
-        acc[date]++;
+        acc[task.priority] = (acc[task.priority] || 0) + 1;
       }
       return acc;
-    }, {});
+    }, { high: 0, medium: 0, low: 0 });
 
     setTaskCompletionData(completionData);
   };
 
   const getChartData = () => {
-    const labels = Object.keys(taskCompletionData);
-    const data = Object.values(taskCompletionData);
+    const labels = ['High', 'Medium', 'Low'];
+    const data = [
+      taskCompletionData.high || 0,
+      taskCompletionData.medium || 0,
+      taskCompletionData.low || 0,
+    ];
 
     return {
       labels,
       datasets: [
         {
-          label: 'Tasks Completed Per Day',
+          label: 'Task Priority Distribution',
           data,
-          backgroundColor: labels.map(() => generateRandomLightColor()),
+          backgroundColor: [
+            priorityColors.high,
+            priorityColors.medium,
+            priorityColors.low,
+          ],
         },
       ],
     };
@@ -260,9 +265,9 @@ const AddTask = () => {
         </div>
 
         {/* Task Completion Pie Chart */}
-        <div className="bg-gray-100 p-4 rounded-lg">
-          <h2 className="text-xl font-bold mb-4">Task Completion Per Day</h2>
-          <Pie data={getChartData()} />
+        <div className="bg-gray-100 p-4 rounded-lg" style={{ width: '300px', height: '300px' }}>
+          <h2 className="text-xl font-bold mb-4">Task Priority Distribution</h2>
+          <Pie data={getChartData()} options={{ maintainAspectRatio: false }} />
         </div>
       </div>
     </div>
@@ -270,6 +275,10 @@ const AddTask = () => {
 };
 
 export default AddTask;
+
+
+
+
 
 
 
