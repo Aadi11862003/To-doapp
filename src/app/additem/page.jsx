@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Navbar from '../sidebar/page'; // Ensure this path is correct
+import { Pie } from 'react-chartjs-2';
+import 'chart.js/auto'; // Automatically register the required chart components
 
 const AddTask = () => {
   const [taskInput, setTaskInput] = useState('');
@@ -9,12 +11,14 @@ const AddTask = () => {
   const [reminder, setReminder] = useState('');
   const [priority, setPriority] = useState('low');
   const [tasks, setTasks] = useState([]);
+  const [taskCompletionData, setTaskCompletionData] = useState({});
 
   useEffect(() => {
     // Load tasks from localStorage when component mounts
     const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
     if (Array.isArray(savedTasks)) {
       setTasks(savedTasks);
+      updateTaskCompletionData(savedTasks);
     } else {
       setTasks([]); // Ensure tasks is always an array
     }
@@ -62,10 +66,12 @@ const AddTask = () => {
         timestamp,
         remainingTime: calculateRemainingTime(timestamp),
         bgColor: generateRandomLightColor(),
+        completed: false,
       };
       const updatedTasks = [...tasks, newTask];
       localStorage.setItem('tasks', JSON.stringify(updatedTasks));
       setTasks(updatedTasks);
+      updateTaskCompletionData(updatedTasks);
       setTaskInput('');
       setDueDate('');
       setReminder('');
@@ -77,6 +83,7 @@ const AddTask = () => {
     const updatedTasks = tasks.filter((_, i) => i !== index);
     localStorage.setItem('tasks', JSON.stringify(updatedTasks));
     setTasks(updatedTasks);
+    updateTaskCompletionData(updatedTasks);
   };
 
   const handleEditTask = (index) => {
@@ -88,12 +95,51 @@ const AddTask = () => {
       );
       localStorage.setItem('tasks', JSON.stringify(updatedTasks));
       setTasks(updatedTasks);
+      updateTaskCompletionData(updatedTasks);
     }
+  };
+
+  const handleTaskCompletion = (index) => {
+    const updatedTasks = tasks.map((task, i) =>
+      i === index ? { ...task, completed: !task.completed } : task
+    );
+    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+    setTasks(updatedTasks);
+    updateTaskCompletionData(updatedTasks);
   };
 
   const formatTimestamp = (timestamp) => {
     const date = new Date(timestamp);
     return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+  };
+
+  const updateTaskCompletionData = (tasks) => {
+    const completionData = tasks.reduce((acc, task) => {
+      if (task.completed) {
+        const date = new Date(task.timestamp).toLocaleDateString();
+        if (!acc[date]) acc[date] = 0;
+        acc[date]++;
+      }
+      return acc;
+    }, {});
+
+    setTaskCompletionData(completionData);
+  };
+
+  const getChartData = () => {
+    const labels = Object.keys(taskCompletionData);
+    const data = Object.values(taskCompletionData);
+
+    return {
+      labels,
+      datasets: [
+        {
+          label: 'Tasks Completed Per Day',
+          data,
+          backgroundColor: labels.map(() => generateRandomLightColor()),
+        },
+      ],
+    };
   };
 
   return (
@@ -156,7 +202,7 @@ const AddTask = () => {
         </div>
 
         {/* Task List Section */}
-        <div className="bg-gray-100 p-4 rounded-lg">
+        <div className="bg-gray-100 p-4 rounded-lg mb-8">
           {tasks.length === 0 ? (
             <p>No tasks added yet.</p>
           ) : (
@@ -173,6 +219,16 @@ const AddTask = () => {
                     </div>
                     <div className="text-gray-500">
                       <span className="font-bold">Remaining:</span> {task.remainingTime}
+                    </div>
+                    <div>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={task.completed}
+                          onChange={() => handleTaskCompletion(index)}
+                        />
+                        {' '} Completed
+                      </label>
                     </div>
                   </div>
                   <div className="flex justify-between">
@@ -202,13 +258,18 @@ const AddTask = () => {
             </div>
           )}
         </div>
+
+        {/* Task Completion Pie Chart */}
+        <div className="bg-gray-100 p-4 rounded-lg">
+          <h2 className="text-xl font-bold mb-4">Task Completion Per Day</h2>
+          <Pie data={getChartData()} />
+        </div>
       </div>
     </div>
   );
 };
 
 export default AddTask;
-
 
 
 
