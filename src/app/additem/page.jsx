@@ -1,5 +1,5 @@
-// pages/additem/page.js
-"use client"
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import Navbar from '../sidebar/page'; // Adjust the import based on the relative path
 import { Pie } from 'react-chartjs-2'; // Import the Pie component
@@ -243,7 +243,6 @@ const AddItem = () => {
 };
 
 export default AddItem;
-
 
 
 

@@ -35,16 +35,16 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <Link href="/todolist">
+          <Link href="/upcoming">
             <div className="hover:text-gray-400 bg-blue-500 text-white rounded-lg p-4 block text-center h-12 w-40">
-              To-do List
+            Upcoming
             </div>
           </Link>
         </li>
         <li>
-          <Link href="/upcoming">
+          <Link href="/team">
             <div className="hover:text-gray-400 bg-blue-500 text-white rounded-lg p-4 block text-center h-12 w-40">
-              Upcoming
+            TEAM 
             </div>
           </Link>
         </li>
