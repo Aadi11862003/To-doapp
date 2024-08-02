@@ -1,3 +1,4 @@
+// pages/sidebar/page.js
 import Link from 'next/link';
 
 const Navbar = () => {
@@ -6,38 +7,52 @@ const Navbar = () => {
       <h2 className="text-2xl font-bold mb-4">TodoListPro</h2>
       <ul className="space-y-4 p-5">
         <li>
-          <Link href="/add-task" className="hover:text-gray-400 bg-blue-500 text-white rounded-lg p-4 block text-center h-12 w-40">
-            Add Task
+          <Link href="/additem" passHref>
+            <div className="hover:text-gray-400 bg-blue-500 text-white rounded-lg p-4 block text-center h-12 w-40">
+              Add Task
+            </div>
           </Link>
         </li>
         <li>
-          <Link href="/search-task" className="hover:text-gray-400 bg-blue-500 text-white rounded-lg p-4 block text-center h-12 w-40">
-            Search
+          <Link href="/Search">
+            <div className="hover:text-gray-400 bg-blue-500 text-white rounded-lg p-4 block text-center h-12 w-40">
+              Search
+            </div>
           </Link>
         </li>
         <li>
-          <Link href="/inbox" className="hover:text-gray-400 bg-blue-500 text-white rounded-lg p-4 block text-center h-12 w-40">
-            Inbox
+          <Link href="/Inbox">
+            <div className="hover:text-gray-400 bg-blue-500 text-white rounded-lg p-4 block text-center h-12 w-40">
+              Inbox
+            </div>
           </Link>
         </li>
         <li>
-          <Link href="/today" className="hover:text-gray-400 bg-blue-500 text-white rounded-lg p-4 block text-center h-12 w-40">
-            Today
+          <Link href="/Today">
+            <div className="hover:text-gray-400 bg-blue-500 text-white rounded-lg p-4 block text-center h-12 w-40">
+              Today
+            </div>
           </Link>
         </li>
         <li>
-          <Link href="/todolist" className="hover:text-gray-400 bg-blue-500 text-white rounded-lg p-4 block text-center h-12 w-40">
-            To-do List
+          <Link href="/todolist">
+            <div className="hover:text-gray-400 bg-blue-500 text-white rounded-lg p-4 block text-center h-12 w-40">
+              To-do List
+            </div>
           </Link>
         </li>
         <li>
-          <Link href="/upcoming" className="hover:text-gray-400 bg-blue-500 text-white rounded-lg p-4 block text-center h-12 w-40">
-            Upcoming
+          <Link href="/upcoming">
+            <div className="hover:text-gray-400 bg-blue-500 text-white rounded-lg p-4 block text-center h-12 w-40">
+              Upcoming
+            </div>
           </Link>
         </li>
         <li>
-          <Link href="/filters" className="hover:text-gray-400 bg-blue-500 text-white rounded-lg p-4 block text-center h-12 w-40">
-            Filters
+          <Link href="/filters">
+            <div className="hover:text-gray-400 bg-blue-500 text-white rounded-lg p-4 block text-center h-12 w-40">
+              Filters
+            </div>
           </Link>
         </li>
       </ul>

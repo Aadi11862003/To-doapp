@@ -1,11 +1,14 @@
-"use client";
-
-import { useState, useEffect } from 'react';
-import Navbar from '../sidebar/page'; // Ensure this path is correct
-import { Pie } from 'react-chartjs-2';
+// pages/additem/page.js
+"use client"
+import React, { useState, useEffect } from 'react';
+import Navbar from '../sidebar/page'; // Adjust the import based on the relative path
+import { Pie } from 'react-chartjs-2'; // Import the Pie component
+import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js'; // Import required Chart.js components
 import 'chart.js/auto'; // Automatically register the required chart components
 
-const AddTask = () => {
+ChartJS.register(Title, Tooltip, Legend, ArcElement); // Register Chart.js components
+
+const AddItem = () => {
   const [taskInput, setTaskInput] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [reminder, setReminder] = useState('');
@@ -14,43 +17,19 @@ const AddTask = () => {
   const [taskCompletionData, setTaskCompletionData] = useState({ high: 0, medium: 0, low: 0 });
 
   useEffect(() => {
-    // Load tasks from localStorage when component mounts
     const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
     if (Array.isArray(savedTasks)) {
       setTasks(savedTasks);
       updateTaskCompletionData(savedTasks);
     } else {
-      setTasks([]); // Ensure tasks is always an array
+      setTasks([]);
     }
-
-    // Update remaining time every second
-    const interval = setInterval(() => {
-      setTasks((prevTasks) =>
-        prevTasks.map((task) => ({
-          ...task,
-          remainingTime: calculateRemainingTime(task.timestamp),
-        }))
-      );
-    }, 1000);
-
-    return () => clearInterval(interval);
   }, []);
 
-  const calculateRemainingTime = (timestamp) => {
-    const createdTime = new Date(timestamp).getTime();
-    const currentTime = new Date().getTime();
-    const difference = createdTime + 24 * 60 * 60 * 1000 - currentTime;
-    if (difference <= 0) return 'Expired';
-    const hours = Math.floor((difference % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
-    const minutes = Math.floor((difference % (60 * 60 * 1000)) / (60 * 1000));
-    const seconds = Math.floor((difference % (60 * 1000)) / 1000);
-    return `${hours}h ${minutes}m ${seconds}s`;
-  };
-
   const priorityColors = {
-    low: 'rgb(200, 255, 200)', // light green
-    medium: 'rgb(255, 255, 200)', // light yellow
-    high: 'rgb(255, 200, 200)' // light red
+    low: 'rgb(200, 255, 200)',
+    medium: 'rgb(255, 255, 200)',
+    high: 'rgb(255, 200, 200)'
   };
 
   const handleAddTask = (e) => {
@@ -63,7 +42,6 @@ const AddTask = () => {
         reminder,
         priority,
         timestamp,
-        remainingTime: calculateRemainingTime(timestamp),
         bgColor: priorityColors[priority],
         completed: false,
       };
@@ -105,11 +83,6 @@ const AddTask = () => {
     localStorage.setItem('tasks', JSON.stringify(updatedTasks));
     setTasks(updatedTasks);
     updateTaskCompletionData(updatedTasks);
-  };
-
-  const formatTimestamp = (timestamp) => {
-    const date = new Date(timestamp);
-    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
   };
 
   const updateTaskCompletionData = (tasks) => {
@@ -222,9 +195,6 @@ const AddTask = () => {
                     <div className="break-words max-h-20 overflow-auto">
                       <span className="font-bold">Task:</span> {task.text}
                     </div>
-                    <div className="text-gray-500">
-                      <span className="font-bold">Remaining:</span> {task.remainingTime}
-                    </div>
                     <div>
                       <label>
                         <input
@@ -240,8 +210,6 @@ const AddTask = () => {
                     <div className="flex flex-col space-y-1">
                       <span><span className="font-bold">Due:</span> {task.dueDate || 'N/A'}</span>
                       <span><span className="font-bold">Reminder:</span> {task.reminder || 'N/A'}</span>
-                      <span><span className="font-bold">Priority:</span> {task.priority}</span>
-                      <span><span className="font-bold">Created:</span> {formatTimestamp(task.timestamp)}</span>
                     </div>
                     <div className="flex flex-col space-y-1">
                       <button
@@ -274,9 +242,7 @@ const AddTask = () => {
   );
 };
 
-export default AddTask;
-
-
+export default AddItem;
 
 
 
